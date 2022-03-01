@@ -23,7 +23,7 @@ const Home = ({navigation, route}) => {
   const remainingTests = data?.tests?.filter(
     value => value.status == 'ongoing',
   ).length;
-  const percentage = (completedTests / totalTests) * 100;
+  const percentage = (completedTests / totalTests) * 100 || 0;
   const keyID = data?.key ? data?.key.match(/.{1,4}/g).join('-') : '';
   const progressValue = percentage ? percentage / 100 : 0;
 
@@ -68,9 +68,7 @@ const Home = ({navigation, route}) => {
               {strings.totalTest}
               {totalTests}
             </Text>
-            <Text style={styles.percentageText}>
-              {percentage !== NaN ? percentage : ''}%
-            </Text>
+            <Text style={styles.percentageText}>{percentage}%</Text>
           </View>
           <LinearProgress
             style={styles.progressBar}

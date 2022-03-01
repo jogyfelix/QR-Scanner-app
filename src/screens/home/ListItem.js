@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import colors from '../../constants/colors';
 import Icon from 'react-native-remix-icon';
 import icons from '../../constants/icons';
@@ -32,10 +32,10 @@ const ListItem = ({item}) => {
           <Text style={styles.subTitles}>{strings.status}</Text>
         </View>
         <View>
-          <View style={styles.flexRow}>
+          <TouchableOpacity style={styles.flexRow}>
             <Text style={styles.downloadText}>{strings.download}</Text>
             <Icon name={icons.downArrow} size="18" color={colors.grey} />
-          </View>
+          </TouchableOpacity>
           <Text style={styles.subTitles}>{strings.report}</Text>
         </View>
       </View>
