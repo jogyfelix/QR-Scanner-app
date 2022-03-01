@@ -6,7 +6,7 @@ import {getData} from '../../redux/actions';
 import colors from '../../constants/colors';
 import Icon from 'react-native-remix-icon';
 import icons from '../../constants/icons';
-import {capitalise, formatDate, showAlert} from '../../utils';
+import {capitalise, formatDate} from '../../utils';
 import ListItem from './ListItem';
 import strings from '../../constants/strings';
 import screenNames from '../../constants/screenNames';
@@ -15,6 +15,7 @@ const Home = ({navigation, route}) => {
   const url = route.params.dataLink;
   const dispatch = useDispatch();
   const data = useSelector(state => state.data);
+
   const totalTests = data?.tests?.length;
   const completedTests = data?.tests?.filter(
     value => value.status == 'completed',
@@ -25,6 +26,7 @@ const Home = ({navigation, route}) => {
   const percentage = (completedTests / totalTests) * 100;
   const keyID = data?.key ? data?.key.match(/.{1,4}/g).join('-') : '';
   const progressValue = percentage ? percentage / 100 : 0;
+
   const handleBackButtonClick = () => {
     navigation.navigate(screenNames.qrScan);
     return true;
@@ -32,6 +34,7 @@ const Home = ({navigation, route}) => {
 
   useEffect(() => {
     url.includes('neurobit') && dispatch(getData(url));
+
     const backHandler = BackHandler.addEventListener(
       'hardwareBackPress',
       handleBackButtonClick,
@@ -40,7 +43,7 @@ const Home = ({navigation, route}) => {
   }, []);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       {url.includes('neurobit') ? (
         <View style={styles.parent}>
           <View style={styles.firstTitle}>
@@ -107,6 +110,7 @@ const Home = ({navigation, route}) => {
 };
 
 const styles = StyleSheet.create({
+  container: {flex: 1},
   parent: {marginHorizontal: 24, marginTop: 48},
   firstTitle: {
     flexDirection: 'row',
