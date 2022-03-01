@@ -89,6 +89,7 @@ const Home = ({navigation, route}) => {
           <FlatList
             style={styles.list}
             data={data?.tests}
+            showsVerticalScrollIndicator={false}
             ListFooterComponent={() => <View style={styles.marginVertical50} />}
             renderItem={({item}) => {
               return <ListItem item={item} />;
