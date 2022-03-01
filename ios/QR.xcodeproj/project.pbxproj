@@ -104,7 +104,6 @@
 				47397D474E88C72534746D34 /* Pods-QR-QRTests.debug.xcconfig */,
 				B84D380B596EA50F8E3F8CDE /* Pods-QR-QRTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -116,6 +115,13 @@
 				42DBB2E6A61E9154F0FEA0E8 /* libPods-QR-QRTests.a */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		57D92041A8494B00891D55E2 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -134,6 +140,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				260D7182A0D7ECA382F7C773 /* Pods */,
+				57D92041A8494B00891D55E2 /* Resources */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
