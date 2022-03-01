@@ -1,16 +1,17 @@
 import React, {useEffect} from 'react';
-import {Text, StyleSheet, View, FlatList} from 'react-native';
+import {Text, StyleSheet, View, FlatList, BackHandler} from 'react-native';
 import {Badge, LinearProgress} from 'react-native-elements';
 import {useSelector, useDispatch} from 'react-redux';
 import {getData} from '../../redux/actions';
 import colors from '../../constants/colors';
 import Icon from 'react-native-remix-icon';
 import icons from '../../constants/icons';
-import {capitalise, formatDate} from '../../utils';
+import {capitalise, formatDate, showAlert} from '../../utils';
 import ListItem from './ListItem';
 import strings from '../../constants/strings';
+import screenNames from '../../constants/screenNames';
 
-const Home = ({route}) => {
+const Home = ({navigation, route}) => {
   const url = route.params.dataLink;
   const dispatch = useDispatch();
   const data = useSelector(state => state.data);
@@ -24,63 +25,82 @@ const Home = ({route}) => {
   const percentage = (completedTests / totalTests) * 100;
   const keyID = data?.key ? data?.key.match(/.{1,4}/g).join('-') : '';
   const progressValue = percentage ? percentage / 100 : 0;
+  const handleBackButtonClick = () => {
+    navigation.navigate(screenNames.qrScan);
+    return true;
+  };
 
   useEffect(() => {
-    dispatch(getData(url));
+    url.includes('neurobit') && dispatch(getData(url));
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackButtonClick,
+    );
+    return () => backHandler.remove();
   }, []);
 
   return (
-    <View style={styles.parent}>
-      <View style={styles.firstTitle}>
-        <Text style={styles.keyId}>{keyID}</Text>
-        <View style={styles.flexRow}>
-          <Badge status="success" containerStyle={styles.justifyCenter} />
-          <Text style={styles.status}>{capitalise(data?.status)}</Text>
+    <View style={{flex: 1}}>
+      {url.includes('neurobit') ? (
+        <View style={styles.parent}>
+          <View style={styles.firstTitle}>
+            <Text style={styles.keyId}>{keyID}</Text>
+            <View style={styles.flexRow}>
+              <Badge status="success" containerStyle={styles.justifyCenter} />
+              <Text style={styles.status}>{capitalise(data?.status)}</Text>
+            </View>
+          </View>
+          <View style={styles.nameParent}>
+            <Icon name={icons.user_fill} size="20" color={colors.grey} />
+            <Text style={styles.subText}>{capitalise(data?.name)}</Text>
+          </View>
+          <View style={styles.dateParent}>
+            <Icon name={icons.calendar_fill} size="20" color={colors.grey} />
+            <Text style={styles.subText}>
+              {formatDate(data?.created_on)} - {formatDate(data?.validity)}
+            </Text>
+          </View>
+          <View style={styles.percentageParent}>
+            <Text style={styles.percentageText}>
+              {strings.totalTest}
+              {totalTests}
+            </Text>
+            <Text style={styles.percentageText}>
+              {percentage !== NaN ? percentage : ''}%
+            </Text>
+          </View>
+          <LinearProgress
+            style={styles.progressBar}
+            value={progressValue}
+            variant="determinate"
+            color={colors.blue}
+            trackColor={colors.lightBlue}
+          />
+          <View style={styles.firstTitle}>
+            <Text style={styles.colorDarkGrey}>
+              {strings.completedTest}
+              {completedTests}
+            </Text>
+            <Text style={styles.colorDarkGrey}>
+              {strings.remainingTest}
+              {remainingTests}
+            </Text>
+          </View>
+          <FlatList
+            style={styles.list}
+            data={data?.tests}
+            ListFooterComponent={() => <View style={styles.marginVertical50} />}
+            renderItem={({item}) => {
+              return <ListItem item={item} />;
+            }}
+            keyExtractor={item => item.id}
+          />
         </View>
-      </View>
-      <View style={styles.nameParent}>
-        <Icon name={icons.user_fill} size="20" color={colors.grey} />
-        <Text style={styles.subText}>{capitalise(data?.name)}</Text>
-      </View>
-      <View style={styles.dateParent}>
-        <Icon name={icons.calendar_fill} size="20" color={colors.grey} />
-        <Text style={styles.subText}>
-          {formatDate(data?.created_on)} - {formatDate(data?.validity)}
-        </Text>
-      </View>
-      <View style={styles.percentageParent}>
-        <Text style={styles.percentageText}>
-          {strings.totalTest}
-          {totalTests}
-        </Text>
-        <Text style={styles.percentageText}>{percentage}%</Text>
-      </View>
-      <LinearProgress
-        style={styles.progressBar}
-        value={progressValue}
-        variant="determinate"
-        color={colors.blue}
-        trackColor={colors.lightBlue}
-      />
-      <View style={styles.firstTitle}>
-        <Text style={styles.colorDarkGrey}>
-          {strings.completedTest}
-          {completedTests}
-        </Text>
-        <Text style={styles.colorDarkGrey}>
-          {strings.remainingTest}
-          {remainingTests}
-        </Text>
-      </View>
-      <FlatList
-        style={styles.list}
-        data={data?.tests}
-        ListFooterComponent={() => <View style={styles.marginVertical50} />}
-        renderItem={({item}) => {
-          return <ListItem item={item} />;
-        }}
-        keyExtractor={item => item.id}
-      />
+      ) : (
+        <View style={styles.noDataParent}>
+          <Text style={styles.percentageText}>{strings.noData}</Text>
+        </View>
+      )}
     </View>
   );
 };
@@ -115,6 +135,11 @@ const styles = StyleSheet.create({
   colorDarkGrey: {color: colors.darkGrey},
   list: {marginTop: 24, marginBottom: 100},
   marginVertical50: {marginVertical: 50},
+  noDataParent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 export default Home;

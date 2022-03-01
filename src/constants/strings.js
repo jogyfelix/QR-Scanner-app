@@ -10,4 +10,5 @@ export default {
   download: 'Download',
   report: 'Report',
   scanning: ' Scanning...',
+  noData: 'No Data',
 };

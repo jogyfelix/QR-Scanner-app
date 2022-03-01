@@ -1,5 +1,6 @@
 import Snackbar from 'react-native-snackbar';
 import moment from 'moment';
+import {Alert} from 'react-native';
 
 export const showSnackShort = message => {
   Snackbar.show({
@@ -7,6 +8,15 @@ export const showSnackShort = message => {
     duration: Snackbar.LENGTH_SHORT,
   });
 };
+
+export const showAlert = (title, message) =>
+  Alert.alert(title, message, [
+    {
+      text: 'Cancel',
+      style: 'cancel',
+    },
+    {text: 'OK'},
+  ]);
 
 export const capitalise = value =>
   value?.replace(/\b\w/g, c => c.toUpperCase());
