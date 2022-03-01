@@ -4,3 +4,5 @@ instructions :
  
 -> yarn install
 -> yarn ios / yarn android
+
+repo link : https://github.com/jogyfelix/QR-Scanner-app.git
