@@ -1,5 +1,8 @@
 export default {
-  home: 'HOME',
-  initial: 'INITIAL',
-  qrScan: 'QRSCAN',
+  home: 'Sessions',
+  initial: 'Initial',
+  qrScan: 'QRScan',
+  tabScreens: 'TabScreens',
+  orders: 'Orders',
+  requestTest: 'Request Tests',
 };

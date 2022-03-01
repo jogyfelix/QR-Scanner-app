@@ -5,8 +5,8 @@ import Store from './redux/store';
 
 export default App = () => {
   return (
-    // <Provider store={Store}>
-    <MainStackScreen />
-    // </Provider>
+    <Provider store={Store}>
+      <MainStackScreen />
+    </Provider>
   );
 };
